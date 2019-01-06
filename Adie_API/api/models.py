@@ -41,22 +41,32 @@ class Adie(models.Model):
         verbose_name_plural = 'adies'
         ordering = ['race']
 
+    def __str__(self):
+        return '\nAge: %s\nGender: %s\nRace: %s\nSexual Orientation: %s\nTransplant?: %s\nLocation: %s, %s' % (self.age, self.gender, self.race, self.orientation, self.transplant, self.location_city, self.location_state)
+
 
 class Company(models.Model):
     MICROAGGRESSIONS = (
-        ('NONE', 'no encounters'),
-        ('LOW', 'one or two encounters'),
-        ('MODERATE', 'more than three encounters'),
-        ('HIGH', 'almost weekly encounters'),
+        ('NONE', 'one comment'),
+        ('LOW', 'two comments'),
+        ('MODERATE', 'comments and attitude'),
+        ('HIGH', 'uncomfortable at the start'),
     )
-    startup = models.BooleanField(null=True)
+    startup = models.BooleanField(default=False)
     org_size = models.IntegerField()
     location_city = models.CharField(max_length=20)
     location_state = models.CharField(max_length=20)
     industry = models.CharField(max_length=128)
-    adies_present = models.BooleanField(null=True)
-    adies = models.ManyToManyField(Adie, through='Offer')
+    adies_present = models.BooleanField(default=False)
     level_of_microaggressions = models.CharField(max_length=20, choices=MICROAGGRESSIONS)
+
+    class Meta:
+        verbose_name = 'Company'
+        verbose_name_plural = 'Companies'
+        ordering = ['level_of_microaggressions']
+
+    def __str__(self):
+        return '\nStartup?: %s\nOrg Size: %s\nLocation: %s,  %s\nIndustry: %s\nAdies Present?: %s\nLevel of Microaggressions?: %s\n' % (self.startup, self.org_size, self.location_city, self.location_state, self.industry, self.adies_present, self.level_of_microaggressions)
 
 
 class Offer(models.Model):
@@ -68,3 +78,11 @@ class Offer(models.Model):
     retirement = models.CharField(max_length=128)
     vacation_days = models.IntegerField()
     company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Offer'
+        verbose_name_plural = 'Offers'
+        ordering = ['adie_id']
+
+    def __str__(self):
+        return '\nAdie: %s\nCompany: %s\nBase Pay: %s \nSigning Bonus: %s\nHealth Insurance: %s\n # of Vacation Days: %s\nRetirement: %s\nRelocation Compensation: %s' % (self.adie_id, self.company_id, self.base_amount, self.signing_bonus, self.health_insurance, self.vacation_days, self.retirement, self.relocation_package)
