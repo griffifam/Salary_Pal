@@ -17,19 +17,25 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from api.resources import AdieResource
-# from api.resources import CompanyResource
-# from api.resources import OfferResource
+from api.resources import CompanyResource
+from api.resources import OfferResource
 from api.views import hello_world
 
 
 adie_resource = AdieResource()
-# company_resource = CompanyResource()
-# offer_resource = OfferResource()
+company_resource = CompanyResource()
+offer_resource = OfferResource()
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(adie_resource.urls)),
+    url(r'^api/', include(company_resource.urls)),
+    url(r'^api/', include(offer_resource.urls)),
 ]
+
+
+
+
 # urlpatterns = [
 #     path('admin/', admin.site.urls),
 #     url(r'^$', hello_world, name='adieapi_hello_world'),
