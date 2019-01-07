@@ -1,4 +1,5 @@
 from django.contrib import admin
+from .models import Adie, Company, Offer
 
 # Register your models here.
 from .models import Adie, Company, Offer
